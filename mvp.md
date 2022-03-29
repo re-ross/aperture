@@ -1,6 +1,6 @@
 # aperture
 
-![aperturelogo](aperture.png)
+![aperturelogo](aperturelogo.png)
 
 ## MVP
 
