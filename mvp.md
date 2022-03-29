@@ -1,5 +1,7 @@
 # aperture
 
+![aperturelogo](aperture.png)
+
 ## MVP
 
 A photo sharing, social media application.
