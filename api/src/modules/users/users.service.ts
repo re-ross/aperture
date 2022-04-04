@@ -5,7 +5,7 @@ import { UserDto } from './dto/user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('USERS_REPOSITORY')
+    @Inject('USER_REPOSITORY')
     private userRepository: typeof User,
   ) {}
 
