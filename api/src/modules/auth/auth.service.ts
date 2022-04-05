@@ -1,58 +1,57 @@
-import { UsersService } from './../users/users.service';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { UsersService } from '../users/users.service';
+import { UserDto } from '../users/dto/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UsersService,
-    private readonly jwtService: JwtService,
+    private readonly UserService: UsersService,
+    private JwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string) {
-    const user = await this.userService.findOneByEmail(username);
-    if (!user) {
-      return null;
-    }
+  async validateUser(email: string, pw: string) {
+    const user = await this.UserService.findOneByEmail(email);
 
-    const match = await this.comparePassword(pass, user.password);
-    if (!match) {
-      return null;
-    }
+    if (!user) return null;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return user;
+
+    const match = this.ValidatePassword(pw, user.password);
+
+    if (!match) return null;
+
     const { password, ...result } = user['dataValues'];
     return result;
   }
 
+  private async ValidatePassword(epw, dbpw) {
+    return await bcrypt.compare(epw, dbpw);
+  }
+
   async login(user) {
-    const token = await this.generateToken(user);
-    return { user, token };
+    const User = this.UserService.findOneByEmail(user.email);
+
+    if (!User) throw new UnauthorizedException('invalid Credentials');
+
+    const token = this.JwtService.signAsync(user);
+    return {
+      User,
+      token,
+    };
   }
 
-  public async create(user) {
-    const pass = await this.hashPassword(user.password);
-    const newUser = await this.userService.create({ ...user, password: pass });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = newUser['dataValues'];
-    const token = await this.generateToken(result);
+  async create(user: UserDto) {
+    const pw = await bcrypt.hash(user.password, 10);
+    const newUser = await this.UserService.create(user);
+    const { password, ...res } = newUser['dataValues'];
 
-    return { user: result, token };
-  }
+    const token = this.JwtService.signAsync(res);
 
-  private async generateToken(user) {
-    const token = await this.jwtService.signAsync(user);
-    return token;
-  }
-
-  private async hashPassword(password) {
-    const hash = await bcrypt.hash(password, 10);
-    return hash;
-  }
-
-  private async comparePassword(enteredPassword, dbPassword) {
-    const match = await bcrypt.compare(enteredPassword, dbPassword);
-    return match;
+    return {
+      newUser,
+      token,
+    };
   }
 }

@@ -21,7 +21,7 @@ export class UserDto {
   @MinLength(6)
   @ApiProperty({
     description: 'Password for user',
-    example: '******',
+    example: 'password',
   })
   readonly password: string;
 }
