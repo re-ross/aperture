@@ -1,10 +1,9 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Table
 export class User extends Model<User> {
   @Column({
-    type: DataType.STRING,
     allowNull: false,
   })
   @ApiProperty({
@@ -14,7 +13,6 @@ export class User extends Model<User> {
   name: string;
 
   @Column({
-    type: DataType.STRING,
     unique: true,
     allowNull: false,
   })
@@ -25,12 +23,11 @@ export class User extends Model<User> {
   email: string;
 
   @Column({
-    type: DataType.STRING,
     allowNull: false,
   })
   @ApiProperty({
     description: 'Password for user',
-    example: '******',
+    example: 'password123',
   })
   password: string;
 }

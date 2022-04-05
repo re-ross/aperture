@@ -9,8 +9,14 @@ export class UsersService {
     private userRepository: typeof User,
   ) {}
 
-  async create(user: UserDto): Promise<User> {
-    return await this.userRepository.create<User>(user);
+  async create(UserDto: UserDto): Promise<User> {
+    const user = new User();
+
+    user.name = UserDto.name;
+    user.email = UserDto.email;
+    user.password = UserDto.password;
+
+    return user.save();
   }
 
   async findOneByEmail(email: string): Promise<User> {

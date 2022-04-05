@@ -35,18 +35,17 @@ export class AuthService {
 
   public async create(user) {
     const salt = bcrypt.genSaltSync(15);
-    const hashedPass = await bcrypt.hash(user.password, salt);
+    const hashedPass = await bcrypt.hashSync(user.password, salt);
+    // console.log(user.password, hashedPass);
 
-    const newUser = await this.userService.create({
+    const createdUser = await this.userService.create({
       ...user,
       password: hashedPass,
     });
 
     // tslint:disable-next-line: no-string-literal
-    const { password, ...result } = newUser['dataValues'];
-
+    const { password, ...result } = createdUser['dataValues'];
     const token = await this.generateToken(result);
-
     return { user: result, token };
   }
 
@@ -54,12 +53,6 @@ export class AuthService {
     const token = await this.jwtService.signAsync(user);
     return token;
   }
-
-  //   private async hashPassword(password) {
-  //     const salt = bcrypt.genSaltSync(15);
-  //     const hash = await bcrypt.hashSync(password, salt);
-  //     return hash;
-  //   }
 
   private async comparePassword(enteredPassword, dbPassword) {
     const match = await bcrypt.compareSync(enteredPassword, dbPassword);
