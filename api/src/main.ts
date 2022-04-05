@@ -2,9 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
+import { ValidateInputPipe } from './pipes/validate.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidateInputPipe());
   app.setGlobalPrefix('api/v1');
   const port = process.env.SERVER_PORT || 3000;
   dotenv.config();
