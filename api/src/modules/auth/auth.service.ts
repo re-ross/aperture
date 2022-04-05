@@ -1,57 +1,68 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+
 import { UsersService } from '../users/users.service';
-import { UserDto } from '../users/dto/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly UserService: UsersService,
-    private JwtService: JwtService,
+    private readonly userService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pw: string) {
-    const user = await this.UserService.findOneByEmail(email);
+  async validateUser(username: string, pass: string) {
+    const user = await this.userService.findOneByEmail(username);
+    if (!user) {
+      return null;
+    }
 
-    if (!user) return null;
+    const match = await this.comparePassword(pass, user.password);
 
-    return user;
+    if (!match) {
+      return null;
+    }
 
-    const match = this.ValidatePassword(pw, user.password);
-
-    if (!match) return null;
-
+    // tslint:disable-next-line: no-string-literal
     const { password, ...result } = user['dataValues'];
     return result;
   }
 
-  private async ValidatePassword(epw, dbpw) {
-    return await bcrypt.compare(epw, dbpw);
+  public async login(user) {
+    const token = await this.generateToken(user);
+    return { user, token };
   }
 
-  async login(user) {
-    const User = this.UserService.findOneByEmail(user.email);
+  public async create(user) {
+    const salt = bcrypt.genSaltSync(15);
+    const hashedPass = await bcrypt.hash(user.password, salt);
 
-    if (!User) throw new UnauthorizedException('invalid Credentials');
+    const newUser = await this.userService.create({
+      ...user,
+      password: hashedPass,
+    });
 
-    const token = this.JwtService.signAsync(user);
-    return {
-      User,
-      token,
-    };
+    // tslint:disable-next-line: no-string-literal
+    const { password, ...result } = newUser['dataValues'];
+
+    const token = await this.generateToken(result);
+
+    return { user: result, token };
   }
 
-  async create(user: UserDto) {
-    const pw = await bcrypt.hash(user.password, 10);
-    const newUser = await this.UserService.create(user);
-    const { password, ...res } = newUser['dataValues'];
+  private async generateToken(user) {
+    const token = await this.jwtService.signAsync(user);
+    return token;
+  }
 
-    const token = this.JwtService.signAsync(res);
+  //   private async hashPassword(password) {
+  //     const salt = bcrypt.genSaltSync(15);
+  //     const hash = await bcrypt.hashSync(password, salt);
+  //     return hash;
+  //   }
 
-    return {
-      newUser,
-      token,
-    };
+  private async comparePassword(enteredPassword, dbPassword) {
+    const match = await bcrypt.compareSync(enteredPassword, dbPassword);
+    return match;
   }
 }
