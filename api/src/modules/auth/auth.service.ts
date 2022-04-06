@@ -29,11 +29,13 @@ export class AuthService {
   }
 
   public async login(user) {
+    console.log(user);
     const token = await this.generateToken(user);
     return { user, token };
   }
 
   public async create(user) {
+    console.log(user);
     const salt = bcrypt.genSaltSync(15);
     const hashedPass = await bcrypt.hashSync(user.password, salt);
     // console.log(user.password, hashedPass);
