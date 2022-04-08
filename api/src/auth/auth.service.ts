@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from './../prisma/prisma.service';
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { AuthDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload, Tokens } from './types';
@@ -40,8 +40,8 @@ export class AuthService {
     await this.updateRefreshHash(user.id, tokens.refresh_token);
     return tokens;
   }
-  async logout(userId: number) {
-    Logger.log(userId);
+  async logout(userId: string) {
+    // Logger.log(userId);
     await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -54,7 +54,7 @@ export class AuthService {
       },
     });
   }
-  async refreshTokens(userId: number, rt: string): Promise<Tokens> {
+  async refreshTokens(userId: string, rt: string): Promise<Tokens> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -76,7 +76,7 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  async generateTokens(userId: number, email: string): Promise<Tokens> {
+  async generateTokens(userId: string, email: string): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: userId,
       email: email,
@@ -97,7 +97,7 @@ export class AuthService {
       refresh_token: refreshToken,
     };
   }
-  async updateRefreshHash(userId: number, refresh_token: string) {
+  async updateRefreshHash(userId: string, refresh_token: string) {
     const hash = await this.hashData(refresh_token);
     await this.prisma.user.update({
       where: {
