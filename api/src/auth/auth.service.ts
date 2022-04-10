@@ -13,12 +13,17 @@ export class AuthService {
     const hash = await this.hashData(dto.password);
     const newUser = await this.prisma.user.create({
       data: {
+        handle: dto.handle,
         email: dto.email,
         hash,
       },
     });
 
-    const tokens = await this.generateTokens(newUser.id, newUser.email);
+    const tokens = await this.generateTokens(
+      newUser.handle,
+      newUser.id,
+      newUser.email,
+    );
     await this.updateRefreshHash(newUser.id, tokens.refresh_token);
     return tokens;
   }
@@ -36,7 +41,7 @@ export class AuthService {
 
     if (!passwordMatches) throw new ForbiddenException('Password');
 
-    const tokens = await this.generateTokens(user.id, user.email);
+    const tokens = await this.generateTokens(user.handle, user.id, user.email);
     await this.updateRefreshHash(user.id, tokens.refresh_token);
     return tokens;
   }
@@ -67,7 +72,7 @@ export class AuthService {
 
     if (!refreshMatches) throw new ForbiddenException('Access denied');
 
-    const tokens = await this.generateTokens(user.id, user.email);
+    const tokens = await this.generateTokens(user.id, user.handle, user.email);
     await this.updateRefreshHash(user.id, tokens.refresh_token);
     return tokens;
   }
@@ -76,8 +81,13 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  async generateTokens(userId: string, email: string): Promise<Tokens> {
+  async generateTokens(
+    handle: string,
+    userId: string,
+    email: string,
+  ): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
+      handle: handle,
       sub: userId,
       email: email,
     };

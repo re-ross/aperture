@@ -1,7 +1,14 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthDto {
+  @IsNotEmpty()
+  @MaxLength(12)
+  @ApiProperty({
+    description: 'Display name for user',
+    example: '@reross',
+  })
+  handle: string;
   @IsNotEmpty()
   @IsEmail()
   @ApiProperty({

@@ -1,7 +1,7 @@
-import { PostsService } from './posts.service';
-import { Body, Controller, Delete, Param, Post, Request } from '@nestjs/common';
-import { PostDto } from './dto/post.dto';
-import { post } from 'src/auth/types';
+// import { PostsService } from './posts.service';
+import { Controller } from '@nestjs/common';
+// import { PostDto } from './dto/post.dto';
+// import { post } from 'src/auth/types';
 
 @Controller('posts')
 export class PostsController {}
