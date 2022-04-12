@@ -6,7 +6,7 @@ export class AuthDto {
   @MaxLength(12)
   @ApiProperty({
     description: 'Display name for user',
-    example: '@reross',
+    example: 'reross',
   })
   handle: string;
   @IsNotEmpty()

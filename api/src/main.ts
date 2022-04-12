@@ -10,7 +10,7 @@ async function bootstrap() {
   const port = process.env.SERVER_PORT || 3333;
   dotenv.config();
 
-  const whitelist = ['http://localhost:3333', 'http://localhost:5000'];
+  const whitelist = ['http://localhost:3333', 'http://localhost:3000'];
   app.enableCors({
     origin: function (origin, callback) {
       if (!origin || whitelist.indexOf(origin) !== -1) {
