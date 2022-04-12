@@ -1,9 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from './../prisma/prisma.service';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Res } from '@nestjs/common';
 import { AuthDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload, Tokens } from './types';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
     return tokens;
   }
 
-  async signinLocal(dto: AuthDto): Promise<Tokens> {
+  async signinLocal(dto: AuthDto, @Res() response: Response): Promise<Tokens> {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -41,12 +42,13 @@ export class AuthService {
 
     if (!passwordMatches) throw new ForbiddenException('Password');
 
+    console.log(response);
     const tokens = await this.generateTokens(user.handle, user.id, user.email);
+
     await this.updateRefreshHash(user.id, tokens.refresh_token);
     return tokens;
   }
   async logout(userId: string) {
-    // Logger.log(userId);
     await this.prisma.user.updateMany({
       where: {
         id: userId,

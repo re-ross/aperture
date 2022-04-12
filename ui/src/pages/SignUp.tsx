@@ -1,6 +1,5 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useState } from "react";
-// import { UserProps } from "./User.types";
 import axios from "axios";
 
 export default function SignUp() {

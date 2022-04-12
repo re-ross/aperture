@@ -21,6 +21,7 @@ import { GetCurrentUserId, Public } from 'src/common/decorators';
 import { GetCurrentUser } from 'src/common/decorators';
 import { post } from 'src/auth/types';
 import { UpdatePostDto } from 'src/posts/dto/updatepost.dto';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -37,9 +38,8 @@ export class AuthController {
   }
   @Public()
   @Post('/local/signin')
-  @HttpCode(HttpStatus.OK)
-  signinLocal(@Body() dto: AuthDto): Promise<Tokens> {
-    return this.authService.signinLocal(dto);
+  signinLocal(@Body() dto: AuthDto, response: Response): Promise<Tokens> {
+    return this.authService.signinLocal(dto, response);
   }
 
   @Post('/logout')
