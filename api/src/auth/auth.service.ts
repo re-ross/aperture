@@ -41,8 +41,6 @@ export class AuthService {
     const passwordMatches = await bcrypt.compare(dto.password, user.hash);
 
     if (!passwordMatches) throw new ForbiddenException('Password');
-
-    console.log(response);
     const tokens = await this.generateTokens(user.handle, user.id, user.email);
 
     await this.updateRefreshHash(user.id, tokens.refresh_token);

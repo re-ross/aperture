@@ -11,6 +11,9 @@ import {
   Param,
   Patch,
   Delete,
+  Req,
+  Res,
+  Logger,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PostsService } from '../posts/posts.service';
@@ -22,12 +25,14 @@ import { GetCurrentUser } from 'src/common/decorators';
 import { post } from 'src/auth/types';
 import { UpdatePostDto } from 'src/posts/dto/updatepost.dto';
 import { Response } from 'express';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
     private postsService: PostsService,
+    private prisma: PrismaService,
   ) {}
 
   @Public()
@@ -36,19 +41,36 @@ export class AuthController {
   signupLocal(@Body() dto: AuthDto): Promise<Tokens> {
     return this.authService.signupLocal(dto);
   }
+  // @Public()
+  // @Post('/local/signin')
+  // signinLocal(@Body() dto: AuthDto, response: Response): Promise<Tokens> {
+  //   return this.authService.signinLocal(dto, response);
+  // }
   @Public()
   @Post('/local/signin')
-  signinLocal(@Body() dto: AuthDto, response: Response): Promise<Tokens> {
-    return this.authService.signinLocal(dto, response);
-  }
+  async signinLocal(@Req() req, @Res({ passthrough: true }) res: Response) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: req.body.email,
+      },
+    });
+    const token = await this.authService.generateTokens(
+      user.handle,
+      user.id,
+      user.email,
+    );
+    const { access_token, refresh_token } = token;
 
+    Logger.warn(token);
+    res.cookie('access_token', access_token, { httpOnly: false });
+    return token;
+  }
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   logout(@GetCurrentUserId() userId: string) {
     return this.authService.logout(userId);
   }
 
-  @Public()
   @UseGuards(RefreshGuard)
   @Post('/refresh')
   @HttpCode(HttpStatus.OK)
@@ -64,27 +86,25 @@ export class AuthController {
   async createPost(@Body() post: PostDto, @Request() req): Promise<post> {
     return this.postsService.createPost(post, req);
   }
-  @Public()
+
   @Get('/feed')
   @HttpCode(HttpStatus.OK)
   async getFeed() {
     return await this.postsService.getFeed();
   }
-  @Public()
+
   @Get('/posts/:handle')
   @HttpCode(HttpStatus.OK)
   async getUsersPosts(@Param('handle') handle: string) {
     return await this.postsService.getUsersPosts(handle);
   }
 
-  @Public()
   @Get('/posts/post/:id')
   @HttpCode(HttpStatus.OK)
   async getPost(@Param('id') id: string) {
     return await this.postsService.getPost(id);
   }
 
-  @Public()
   @Patch('/posts/post/:id')
   @HttpCode(HttpStatus.OK)
   async updatePost(
@@ -94,7 +114,6 @@ export class AuthController {
     return await this.postsService.updatePost(id, updatePostDto);
   }
 
-  @Public()
   @Delete('/posts/post/:id')
   @HttpCode(HttpStatus.OK)
   async deletePost(@Param('id') id: string) {

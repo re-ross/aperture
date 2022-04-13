@@ -1,6 +1,8 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import { useSignIn } from "react-auth-kit";
 
 export default function SignIn() {
   type InputEvent = React.ChangeEvent<HTMLInputElement>;
@@ -25,9 +27,10 @@ export default function SignIn() {
     axios
       .post("http://localhost:3333/auth/local/signin", user)
       .then((res) => {
-        console.log(res.data);
+        console.log("hitttt");
+        console.log("Submitted");
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.log(err));
   };
   return (
     <>
@@ -44,12 +47,13 @@ export default function SignIn() {
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or{" "}
-              <a
-                href="#"
-                className="font-medium text-[#8FBFE0] hover:text-[#05668D]"
+              <Link
+                to="/signup"
+                className="font-medium text-[#8FBFE0]
+                hover:text-[#05668D]"
               >
                 create your account!
-              </a>
+              </Link>
             </p>
           </div>
 
