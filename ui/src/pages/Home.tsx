@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import ImageCard from "../components/ImageCard";
 axios.defaults.withCredentials = true;
 
 const Home = () => {
   const [cookies, setCookies] = useCookies(["access_token"]);
-
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([] as any[]);
   useEffect(() => {
     axios
       .get("http://localhost:3333/auth/feed", {
@@ -14,17 +14,15 @@ const Home = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.access_token}`,
         },
-        // test req.body
       })
-      .then((res) => console.log(res.data))
+      .then((res) => setPosts(res.data))
       .catch((err) => console.log(err));
   }, []);
   return (
     <>
-      <h1>testing</h1>
       <div className="text-center justify-center flex gap-6 flex-wrap ">
         {posts.map((post) => (
-          <h3>post.comment</h3>
+          <ImageCard post={post} />
         ))}
       </div>
     </>

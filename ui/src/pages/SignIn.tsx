@@ -1,10 +1,13 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { Link, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import axios from "axios";
-import { useSignIn } from "react-auth-kit";
+axios.defaults.withCredentials = true;
 
 export default function SignIn() {
+  const [cookies, setCookies] = useCookies(["access_token"]);
   type InputEvent = React.ChangeEvent<HTMLInputElement>;
   type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
   const [user, setUser] = useState({
@@ -12,6 +15,7 @@ export default function SignIn() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e: InputEvent) => {
     setUser((prevState) => {
@@ -26,11 +30,11 @@ export default function SignIn() {
     e.preventDefault();
     axios
       .post("http://localhost:3333/auth/local/signin", user)
-      .then((res) => {
-        console.log("hitttt");
-        console.log("Submitted");
+      .then(() => {
+        swal("Logged In", "👍", "success");
       })
       .catch((err) => console.log(err));
+    navigate("/home");
   };
   return (
     <>
@@ -109,8 +113,6 @@ export default function SignIn() {
                 />
               </div>
             </div>
-
-            <div className="flex items-center justify-between"></div>
 
             <div>
               <button

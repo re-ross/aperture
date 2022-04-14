@@ -1,11 +1,12 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const navigation = [
   { name: "Home", href: "/home", current: true },
   { name: "Profile", href: "#", current: false },
-  { name: "Logout", href: "#", current: false },
+  { name: "Post", href: "#", current: false },
+  { name: "Logout", href: "/logout", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -75,14 +76,14 @@ export default function Navbar() {
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>
-                    <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                    {/* <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         alt=""
                       />
-                    </Menu.Button>
+                    </Menu.Button> */}
                   </div>
                   <Transition
                     as={Fragment}
@@ -103,7 +104,7 @@ export default function Navbar() {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Your Profile
+                            Post
                           </a>
                         )}
                       </Menu.Item>
@@ -123,13 +124,13 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/logout"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Sign out
+                            Logout
                           </a>
                         )}
                       </Menu.Item>
@@ -139,27 +140,6 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-
-          <Disclosure.Panel className="sm:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
         </>
       )}
     </Disclosure>

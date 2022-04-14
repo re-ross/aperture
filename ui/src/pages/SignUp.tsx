@@ -1,5 +1,6 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useState } from "react";
+import swal from "sweetalert";
 import axios from "axios";
 
 export default function SignUp() {
@@ -23,9 +24,10 @@ export default function SignUp() {
   const handleSubmit = (e: ButtonEvent) => {
     e.preventDefault();
     if (newUser.password !== newUser.passwordConfirm) {
-      alert("Passwords don't match");
+      swal("Passwords don't match");
+    } else if (!newUser.handle || !newUser.email) {
+      swal("Error", "Please provide all information", "error");
     } else {
-      console.log(newUser);
       axios
         .post("http://localhost:3333/auth/local/signup", newUser)
         .then((res) => {
@@ -37,7 +39,7 @@ export default function SignUp() {
             passwordConfirm: "",
           });
         })
-        .catch((err) => console.error(err));
+        .catch((err) => alert(err));
     }
   };
 
