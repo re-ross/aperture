@@ -65,9 +65,11 @@ export class AuthController {
     res.cookie('access_token', access_token, { httpOnly: false });
     return token;
   }
+
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   logout(@GetCurrentUserId() userId: string) {
+    console.log(userId);
     return this.authService.logout(userId);
   }
 

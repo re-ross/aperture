@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from './../prisma/prisma.service';
-import { ForbiddenException, Injectable, Res } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, Res } from '@nestjs/common';
 import { AuthDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload, Tokens } from './types';
@@ -47,7 +47,7 @@ export class AuthService {
     return tokens;
   }
   async logout(userId: string) {
-    await this.prisma.user.updateMany({
+    const user = await this.prisma.user.updateMany({
       where: {
         id: userId,
         hashedRt: {
@@ -58,6 +58,10 @@ export class AuthService {
         hashedRt: null,
       },
     });
+    Logger.warn(user);
+    return user;
+
+    // make variable user to return user handle
   }
   async refreshTokens(userId: string, rt: string): Promise<Tokens> {
     const user = await this.prisma.user.findUnique({
