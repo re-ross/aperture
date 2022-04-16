@@ -1,11 +1,13 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
 
 export default function SignUp() {
   type InputEvent = React.ChangeEvent<HTMLInputElement>;
   type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
+  const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     handle: "",
     email: "",
@@ -30,8 +32,7 @@ export default function SignUp() {
     } else {
       axios
         .post("http://localhost:3333/auth/local/signup", newUser)
-        .then((res) => {
-          console.log(res.data);
+        .then(() => {
           setNewUser({
             handle: "",
             email: "",
@@ -39,7 +40,11 @@ export default function SignUp() {
             passwordConfirm: "",
           });
         })
-        .catch((err) => alert(err));
+        .catch((err) => alert(err))
+        .finally(() => {
+          swal("Account created!", "👍", "success");
+        });
+      navigate("/");
     }
   };
 

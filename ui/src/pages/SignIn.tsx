@@ -26,15 +26,15 @@ export default function SignIn() {
     });
   };
 
-  const handleSubmit = (e: ButtonEvent) => {
+  const handleSubmit = async (e: ButtonEvent) => {
     e.preventDefault();
-    axios
+    await axios
       .post("http://localhost:3333/auth/local/signin", user)
       .then(() => {
         swal("Logged In", "👍", "success");
       })
       .catch((err) => console.log(err));
-    navigate("/home");
+    cookies && navigate("/home");
   };
   return (
     <>

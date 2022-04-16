@@ -10,7 +10,7 @@ const Home = () => {
 
   const getPosts = async () => {
     await axios
-      .get("http://localhost:3333/posts/feed", {
+      .get("http://localhost:3333/posts/profile", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.access_token}`,

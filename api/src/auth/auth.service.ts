@@ -58,8 +58,6 @@ export class AuthService {
         hashedRt: null,
       },
     });
-    Logger.warn(user);
-    return user;
 
     // make variable user to return user handle
   }

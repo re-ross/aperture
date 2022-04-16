@@ -29,9 +29,10 @@ export class PostsService {
     // eventually switch to auth route for personalized feed
   }
 
-  async getUsersPosts(handle: string): Promise<post[]> {
+  async getUsersPosts(id: string): Promise<post[]> {
+    console.log(id);
     return await this.prisma.post.findMany({
-      where: { author: handle },
+      where: { userId: id },
     });
   }
   async getPost(id: string) {
