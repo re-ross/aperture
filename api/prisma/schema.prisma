@@ -30,6 +30,7 @@ model Post {
   updatedAt DateTime @updatedAt
 
   imgUrl String
+  bytes Bytes
   caption String?
   author String?
   user User? @relation(fields: [userId], references: [id])

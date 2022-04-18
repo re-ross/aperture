@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import swal from "sweetalert";
+import { fromByteArray } from "base64-js";
 
 interface PropsItem {
   post: {
     id: string;
+    bytes: Uint8Array;
     imgUrl: string;
     caption: string;
     author: string;
@@ -12,6 +14,9 @@ interface PropsItem {
 }
 
 const ImageCard = ({ post }: PropsItem) => {
+  //@ts-ignore
+  const base64String = fromByteArray(post.bytes.data);
+
   const [cookies, setCookies] = useCookies(["access_token"]);
   const deletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -36,7 +41,11 @@ const ImageCard = ({ post }: PropsItem) => {
             </span>
           </div>
         </div>
-        <img src={post.imgUrl} alt={post.imgUrl} />
+        <img
+          src={`data:image/jpeg;base64,${base64String}`}
+          alt={post.imgUrl}
+          className={"w-[700px] h-[700px]"}
+        />
         <div className="flex items-center mx-4 mt-3 mb-2 justify-between">
           <div className="font-normal text-sm">
             {post.author}: {post.caption}

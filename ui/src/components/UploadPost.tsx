@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PlusIcon } from "@heroicons/react/solid";
 
 export default function UploadPost() {
@@ -8,18 +8,26 @@ export default function UploadPost() {
 
   const types = ["image/png", "image/jpeg"];
 
+  const inputFile = useRef<HTMLInputElement | null>(null);
+  const onButtonClick = () => {
+    setFile(inputFile.current?.click());
+    console.log(file);
+  };
+
   const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     let selected = e.target.files![0];
+    console.log(selected);
     if (selected && types.includes(selected.type)) {
       setFile(selected);
     } else {
       setFile(null);
       setError("Please select an image file (png or jpeg)");
+      console.log(error);
     }
   };
-
+  //
   return (
-    <div className="text-center">
+    <div className="mt-8 text-center">
       <svg
         className="mx-auto h-12 w-12 text-gray-400"
         fill="none"
@@ -32,21 +40,27 @@ export default function UploadPost() {
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+          d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
         />
       </svg>
-      <h3 className="mt-2 text-sm font-medium text-gray-900">No projects</h3>
-      <p className="mt-1 text-sm text-gray-500">
-        Get started by creating a new project.
-      </p>
+      <h3 className="mt-2 text-sm font-medium text-gray-900">
+        Upload a new photo!
+      </h3>
+
       <div className="mt-6">
+        <input
+          type="file"
+          id="file"
+          ref={inputFile}
+          style={{ display: "none" }}
+        />
         <button
           type="button"
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          onClick={() => fileHandler}
+          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#8FBFE0] hover:bg-[#05668D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          onClick={onButtonClick}
         >
           <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          New Project
+          New Post
         </button>
       </div>
     </div>

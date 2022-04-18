@@ -10,7 +10,11 @@ import {
   Param,
   Patch,
   Delete,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import * as path from 'path';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PostDto } from './dto/post.dto';
 import { UpdatePostDto } from 'src/posts/dto/updatepost.dto';
 import { post } from 'src/auth/types';
@@ -25,10 +29,16 @@ export class PostsController {
     private prisma: PrismaService,
     private authService: AuthService,
   ) {}
+
+  @UseInterceptors(FileInterceptor('imgUrl'))
   @Post('/create')
   @HttpCode(HttpStatus.CREATED)
-  async createPost(@Body() post: PostDto, @Request() req): Promise<post> {
-    return this.postsService.createPost(post, req);
+  async createPost(
+    @Body() post: PostDto,
+    @Request() req,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<post> {
+    return this.postsService.createPost(post, req, file);
   }
 
   @Get('/feed')

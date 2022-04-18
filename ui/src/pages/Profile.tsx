@@ -21,7 +21,7 @@ const Home = () => {
   };
   useEffect(() => {
     getPosts();
-  }, [posts]);
+  }, []);
 
   return (
     <>

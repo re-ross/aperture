@@ -8,11 +8,12 @@ import { post } from 'src/auth/types';
 export class PostsService {
   constructor(private prisma: PrismaService) {}
 
-  async createPost(data: PostDto, { user }): Promise<post> {
-    console.log(user);
+  async createPost(data: PostDto, { user }, file): Promise<post> {
+    console.log(file);
     const newPost = await this.prisma.post.create({
       data: {
-        imgUrl: data.imgUrl,
+        imgUrl: file.originalname,
+        bytes: file.buffer,
         caption: data.caption,
         author: user.handle,
         user: {
