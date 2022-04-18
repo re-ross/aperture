@@ -1,4 +1,3 @@
-import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 // check class-validator for maximum chars
 export class PostDto {

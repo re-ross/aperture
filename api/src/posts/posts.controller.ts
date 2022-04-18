@@ -13,7 +13,6 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PostDto } from './dto/post.dto';
 import { UpdatePostDto } from 'src/posts/dto/updatepost.dto';

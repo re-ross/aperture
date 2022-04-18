@@ -9,7 +9,7 @@ export class PostsService {
   constructor(private prisma: PrismaService) {}
 
   async createPost(data: PostDto, { user }, file): Promise<post> {
-    console.log(file);
+    Logger.warn(file);
     const newPost = await this.prisma.post.create({
       data: {
         imgUrl: file.originalname,
@@ -31,7 +31,6 @@ export class PostsService {
   }
 
   async getUsersPosts(id: string): Promise<post[]> {
-    console.log(id);
     return await this.prisma.post.findMany({
       where: { userId: id },
     });
@@ -43,7 +42,6 @@ export class PostsService {
   }
 
   async updatePost(id: string, updatePostDto: UpdatePostDto) {
-    Logger.warn('hittt');
     return await this.prisma.post.update({
       where: {
         id: id,

@@ -8,7 +8,6 @@ import {
   UseGuards,
   Req,
   Res,
-  Logger,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PostsService } from '../posts/posts.service';
@@ -55,7 +54,6 @@ export class AuthController {
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   logout(@GetCurrentUserId() userId: string) {
-    Logger.warn(userId);
     return this.authService.logout(userId);
   }
 
