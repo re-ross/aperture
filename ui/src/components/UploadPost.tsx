@@ -67,18 +67,18 @@ export default function UploadPost() {
 
         <div className="mt-6 flex flex-col gap-2">
           <input
-            type="text"
-            value={caption}
-            placeholder="New comment..."
-            className="px-3 py-3 placeholder-slate-300 text-slate-600 relative  bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
-            onChange={onInputChange}
-          />
-          <input
             type="file"
             id="imgUrl"
             name="imgUrl"
             accept=".png, .jpg, .jpeg"
             onChange={onFileChange}
+          />
+          <input
+            type="text"
+            value={caption}
+            placeholder="New caption..."
+            className="px-3 py-3 placeholder-slate-300 text-slate-600 relative  bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
+            onChange={onInputChange}
           />
           {/* <button
             type="button"
