@@ -28,9 +28,8 @@ export default function UploadPost() {
   const onSubmit = (e: ButtonEvent) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("imgUrl", file);
+    formData.append("file", file);
     formData.append("caption", caption);
-    console.log(formData);
     axios
       .post("http://localhost:3333/posts/create", formData, {
         headers: {

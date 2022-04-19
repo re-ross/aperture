@@ -31,7 +31,10 @@ export default function Navbar() {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex-shrink-0 flex items-center">
+                <div
+                  className="flex-shrink-0 flex items-center cursor-pointer"
+                  onClick={() => navigate("/home")}
+                >
                   <img
                     className="block lg:hidden h-8 w-auto"
                     src="/assets/images/aperturelogo.png"
@@ -51,7 +54,7 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-900 text-white"
+                            ? "bg-[#5c6f45] text-white"
                             : " hover:bg-[#5c6f45] hover:text-white",
                           "px-3 py-2 rounded-md text-sm font-medium"
                         )}
@@ -68,7 +71,7 @@ export default function Navbar() {
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 cursor-pointer"
+                      className="h-6 w-6 cursor-pointer hover:bg-[#5c6f45] rounded"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

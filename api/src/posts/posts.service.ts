@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from './../prisma/prisma.service';
 import { PostDto } from './dto/post.dto';
 import { UpdatePostDto } from './dto/updatepost.dto';
@@ -29,6 +29,11 @@ export class PostsService {
     // eventually switch to auth route for personalized feed
   }
 
+  async getCurrentUsersPosts(id: string): Promise<post[]> {
+    return await this.prisma.post.findMany({
+      where: { userId: id },
+    });
+  }
   async getUsersPosts(id: string): Promise<post[]> {
     return await this.prisma.post.findMany({
       where: { userId: id },

@@ -5,7 +5,7 @@ import ImageCard from "../components/ImageCard";
 axios.defaults.withCredentials = true;
 
 const Home = () => {
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies] = useCookies(["access_token"]);
   const [posts, setPosts] = useState([] as any[]);
 
   const getPosts = async () => {
@@ -27,7 +27,7 @@ const Home = () => {
     <>
       <div className="flex-col-reverse justify-center flex gap-6 flex-wrap items-center">
         {posts.map((post) => (
-          <ImageCard post={post} />
+          <ImageCard post={post} key={post.id} />
         ))}
       </div>
     </>

@@ -5,7 +5,7 @@ import ImageCard from "../components/ImageCard";
 axios.defaults.withCredentials = true;
 
 const Home = () => {
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies] = useCookies(["access_token"]);
   const [posts, setPosts] = useState([] as any[]);
 
   const getPosts = async () => {

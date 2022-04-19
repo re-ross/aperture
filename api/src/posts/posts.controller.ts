@@ -29,7 +29,7 @@ export class PostsController {
     private authService: AuthService,
   ) {}
 
-  @UseInterceptors(FileInterceptor('imgUrl'))
+  @UseInterceptors(FileInterceptor('file'))
   @Post('/create')
   @HttpCode(HttpStatus.CREATED)
   async createPost(
@@ -48,8 +48,13 @@ export class PostsController {
 
   @Get('/profile')
   @HttpCode(HttpStatus.OK)
-  async getUsersPosts(@GetCurrentUserId() userId: string) {
+  async getCurrentUsersPosts(@GetCurrentUserId() userId: string) {
     return await this.postsService.getUsersPosts(userId);
+  }
+  @Get('/users/:author')
+  @HttpCode(HttpStatus.OK)
+  async getUsersPosts(author: string) {
+    return await this.postsService.getUsersPosts(author);
   }
 
   @Get('/post/:id')

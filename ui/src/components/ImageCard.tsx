@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import swal from "sweetalert";
 import { fromByteArray } from "base64-js";
+import { useNavigate } from "react-router-dom";
 
 interface PropsItem {
   post: {
@@ -14,11 +15,13 @@ interface PropsItem {
 }
 
 const ImageCard = ({ post }: PropsItem) => {
+  type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
+  const navigate = useNavigate();
   //@ts-ignore
   const base64String = fromByteArray(post.bytes.data);
-
   const [cookies] = useCookies(["access_token"]);
-  const deletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  const deletePost = (e: ButtonEvent) => {
     e.preventDefault();
     const { id } = e.currentTarget;
     axios
@@ -31,6 +34,7 @@ const ImageCard = ({ post }: PropsItem) => {
       .then(() => swal("Deleted", "Post successfully deleted", "success"))
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="p-4 max-w-3xl">
       <div className="bg-white border">
