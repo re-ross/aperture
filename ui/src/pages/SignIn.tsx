@@ -7,7 +7,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 export default function SignIn() {
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies] = useCookies(["access_token"]);
   type InputEvent = React.ChangeEvent<HTMLInputElement>;
   type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
   const [user, setUser] = useState({

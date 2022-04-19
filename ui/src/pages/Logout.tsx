@@ -9,7 +9,7 @@ export default function Logout() {
   const navigate = useNavigate();
   const submitLogout = () => {
     axios
-      .post("http://localhost:3333/posts/cre", cookies, {
+      .post("http://localhost:3333/auth/logout", cookies, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.access_token}`,

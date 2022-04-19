@@ -17,7 +17,7 @@ const ImageCard = ({ post }: PropsItem) => {
   //@ts-ignore
   const base64String = fromByteArray(post.bytes.data);
 
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies] = useCookies(["access_token"]);
   const deletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const { id } = e.currentTarget;

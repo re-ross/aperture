@@ -9,7 +9,6 @@ export class PostsService {
   constructor(private prisma: PrismaService) {}
 
   async createPost(data: PostDto, { user }, file): Promise<post> {
-    Logger.warn(file);
     const newPost = await this.prisma.post.create({
       data: {
         imgUrl: file.originalname,
