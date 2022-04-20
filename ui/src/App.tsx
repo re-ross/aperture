@@ -1,9 +1,7 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { Home, SignIn, SignUp, Logout, UploadPost } from "./pages";
+import { Home, SignIn, SignUp, Logout, UploadPost, Profile } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-import Profile from "./pages/Profile";
 
 function App() {
   return (

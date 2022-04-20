@@ -1,27 +1,17 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import { useCookies } from "react-cookie";
 import ImageCard from "../components/ImageCard";
+import { getProfilePosts } from "../hooks";
 axios.defaults.withCredentials = true;
 
-const Home = () => {
+export const Profile = () => {
   const [cookies] = useCookies(["access_token"]);
   const [posts, setPosts] = useState([] as any[]);
 
-  const getProfilePosts = async () => {
-    await axios
-      .get("http://localhost:3333/posts/profile", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.access_token}`,
-        },
-      })
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.log(err));
-  };
-  useEffect(() => {
-    getProfilePosts();
-  }, []);
+  useLayoutEffect(() => {
+    getProfilePosts(cookies.access_token, setPosts);
+  }, [cookies.access_token, posts]);
 
   return (
     <>
@@ -33,5 +23,3 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;

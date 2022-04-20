@@ -9,7 +9,6 @@ import { InputEvent, ButtonEvent } from "../types";
 export const UploadPost = () => {
   const [cookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
-
   const [file, setFile] = useState<File | string>("");
   const [caption, setCaption] = useState("");
 

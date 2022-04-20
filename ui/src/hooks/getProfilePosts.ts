@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const getPosts = (
+export const getProfilePosts = (
   access_token: string,
   setPosts: React.Dispatch<React.SetStateAction<any[]>>
 ) => {
   axios
-    .get("http://localhost:3333/posts/feed", {
+    .get("http://localhost:3333/posts/profile", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${access_token}`,
