@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { InputEvent, ButtonEvent } from "../types";
 
-export default function UploadPost() {
+export const UploadPost = () => {
   const [cookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
 
@@ -92,4 +92,4 @@ export default function UploadPost() {
       </form>
     </div>
   );
-}
+};

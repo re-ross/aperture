@@ -2,12 +2,10 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
-import swal from "sweetalert";
-import axios from "axios";
 import { InputEvent, ButtonEvent } from "../types";
-axios.defaults.withCredentials = true;
+import { loginUser } from "../hooks";
 
-export default function SignIn() {
+export const SignIn = () => {
   const [cookies] = useCookies(["access_token"]);
   const [user, setUser] = useState({
     handle: "",
@@ -27,12 +25,7 @@ export default function SignIn() {
 
   const handleSubmit = async (e: ButtonEvent) => {
     e.preventDefault();
-    await axios
-      .post("http://localhost:3333/auth/local/signin", user)
-      .then(() => {
-        swal("Logged In", "👍", "success");
-      })
-      .catch((err) => console.log(err));
+    await loginUser(user);
     cookies && navigate("/home");
   };
   return (
@@ -133,4 +126,4 @@ export default function SignIn() {
       </div>
     </>
   );
-}
+};

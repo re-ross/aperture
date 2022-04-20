@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import swal from "sweetalert";
 axios.defaults.withCredentials = true;
 
-export default function Logout() {
+export const Logout = () => {
   const [cookies, setCookies, removeCookie] = useCookies(["access_token"]);
   const navigate = useNavigate();
   const submitLogout = () => {
@@ -81,4 +81,4 @@ export default function Logout() {
       </div>
     </>
   );
-}
+};

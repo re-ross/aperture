@@ -2,12 +2,12 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
-import axios from "axios";
 import { InputEvent, ButtonEvent } from "../types";
+import { createUser } from "../hooks";
 
-export default function SignUp() {
+export const SignUp = () => {
   const navigate = useNavigate();
-  const [newUser, setNewUser] = useState({
+  const [user, setUser] = useState({
     handle: "",
     email: "",
     password: "",
@@ -15,7 +15,7 @@ export default function SignUp() {
   });
 
   const handleChange = (e: InputEvent) => {
-    setNewUser((prevState) => {
+    setUser((prevState) => {
       return {
         ...prevState,
         [e.target.name]: e.target.value,
@@ -24,25 +24,12 @@ export default function SignUp() {
   };
   const handleSubmit = (e: ButtonEvent) => {
     e.preventDefault();
-    if (newUser.password !== newUser.passwordConfirm) {
+    if (user.password !== user.passwordConfirm) {
       swal("Passwords don't match");
-    } else if (!newUser.handle || !newUser.email) {
+    } else if (!user.handle || !user.email) {
       swal("Error", "Please provide all information", "error");
     } else {
-      axios
-        .post("http://localhost:3333/auth/local/signup", newUser)
-        .then(() => {
-          setNewUser({
-            handle: "",
-            email: "",
-            password: "",
-            passwordConfirm: "",
-          });
-        })
-        .catch((err) => alert(err))
-        .finally(() => {
-          swal("Account created!", "👍", "success");
-        });
+      createUser(user);
       navigate("/");
     }
   };
@@ -74,7 +61,7 @@ export default function SignUp() {
                   type="handle"
                   autoComplete="handle"
                   required
-                  value={newUser.handle}
+                  value={user.handle}
                   onChange={handleChange}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="User name"
@@ -90,7 +77,7 @@ export default function SignUp() {
                   type="email"
                   autoComplete="email"
                   required
-                  value={newUser.email}
+                  value={user.email}
                   onChange={handleChange}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
@@ -106,7 +93,7 @@ export default function SignUp() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  value={newUser.password}
+                  value={user.password}
                   onChange={handleChange}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
@@ -120,7 +107,7 @@ export default function SignUp() {
                   id="passwordConfirm"
                   name="passwordConfirm"
                   type="password"
-                  value={newUser.passwordConfirm}
+                  value={user.passwordConfirm}
                   onChange={handleChange}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Confirm password"
@@ -150,4 +137,4 @@ export default function SignUp() {
       </div>
     </>
   );
-}
+};

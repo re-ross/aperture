@@ -1,12 +1,8 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import SignIn from "./pages/SignIn";
-
+import { Home, SignIn, SignUp, Logout, UploadPost } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
-import Logout from "./pages/Logout";
-import UploadPost from "./components/UploadPost";
+
 import Profile from "./pages/Profile";
 
 function App() {

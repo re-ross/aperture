@@ -8,7 +8,7 @@ const Home = () => {
   const [cookies] = useCookies(["access_token"]);
   const [posts, setPosts] = useState([] as any[]);
 
-  const getPosts = async () => {
+  const getProfilePosts = async () => {
     await axios
       .get("http://localhost:3333/posts/profile", {
         headers: {
@@ -20,7 +20,7 @@ const Home = () => {
       .catch((err) => console.log(err));
   };
   useEffect(() => {
-    getPosts();
+    getProfilePosts();
   }, []);
 
   return (
