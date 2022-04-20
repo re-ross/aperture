@@ -3,10 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
+import { InputEvent, ButtonEvent } from "../types";
 
 export default function SignUp() {
-  type InputEvent = React.ChangeEvent<HTMLInputElement>;
-  type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
   const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     handle: "",

@@ -46,8 +46,6 @@ export class PostsService {
   }
 
   async updatePost(id: string, updatePostDto: UpdatePostDto) {
-    console.log(id);
-    console.log(updatePostDto);
     return await this.prisma.post.update({
       where: {
         id: id,

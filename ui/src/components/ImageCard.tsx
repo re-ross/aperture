@@ -4,20 +4,9 @@ import swal from "sweetalert";
 import { fromByteArray } from "base64-js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-interface PropsItem {
-  post: {
-    id: string;
-    bytes: Uint8Array;
-    imgUrl: string;
-    caption: string;
-    author: string;
-  };
-}
+import { InputEvent, ButtonEvent, PropsItem } from "../types";
 
 const ImageCard = ({ post }: PropsItem) => {
-  type InputEvent = React.ChangeEvent<HTMLInputElement>;
-  type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
   const navigate = useNavigate();
   //@ts-ignore
   const base64String = fromByteArray(post.bytes.data);
@@ -37,14 +26,14 @@ const ImageCard = ({ post }: PropsItem) => {
       .then(() => swal("Deleted", "Post successfully deleted", "success"))
       .catch((err) => console.log(err));
   };
-  const handleChange = (e: InputEvent) => {
+  const handleCaptionChange = (e: InputEvent) => {
     e.preventDefault();
     setNewCaption({
       caption: e.target.value,
     });
   };
 
-  const handleSubmit = async (e: ButtonEvent) => {
+  const handleCaptionSubmit = async (e: ButtonEvent) => {
     const { id } = e.currentTarget;
     e.preventDefault();
     await axios
@@ -56,6 +45,7 @@ const ImageCard = ({ post }: PropsItem) => {
       })
       .then(() => swal("Edited", "📝", "success"))
       .catch((err) => console.log(err));
+    navigate("/home");
   };
 
   return (
@@ -80,14 +70,14 @@ const ImageCard = ({ post }: PropsItem) => {
               className="border-none font-normal text-sm text-black"
               type="text"
               placeholder={post.caption}
-              onChange={handleChange}
+              onChange={handleCaptionChange}
             />
           </div>
           <div>
             <button
               id={post.id}
               className="inline-flex items-center justify-center w-10 h-10 mr-2 text-gray-700 transition-colors duration-150 bg-white rounded-full focus:shadow-outline hover:bg-gray-200"
-              onClick={handleSubmit}
+              onClick={handleCaptionSubmit}
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>

@@ -1,5 +1,5 @@
-export interface User {
-  id: string;
+export type User = {
   handle: string;
-  status: boolean;
-}
+  email: string;
+  password: string;
+};

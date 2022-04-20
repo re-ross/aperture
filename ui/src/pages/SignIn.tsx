@@ -4,12 +4,11 @@ import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
+import { InputEvent, ButtonEvent } from "../types";
 axios.defaults.withCredentials = true;
 
 export default function SignIn() {
   const [cookies] = useCookies(["access_token"]);
-  type InputEvent = React.ChangeEvent<HTMLInputElement>;
-  type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
   const [user, setUser] = useState({
     handle: "",
     email: "",

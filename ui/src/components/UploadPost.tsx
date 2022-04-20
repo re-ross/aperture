@@ -4,16 +4,16 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import { InputEvent, ButtonEvent } from "../types";
 
 export default function UploadPost() {
   const [cookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
-  type InputEvent = React.ChangeEvent<HTMLInputElement>;
-  type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
+
   const [file, setFile] = useState<File | string>("");
   const [caption, setCaption] = useState("");
 
-  const onFileChange = (e: InputEvent) => {
+  const fileChange = (e: InputEvent) => {
     if (e.target.files != null) {
       setFile(e.target.files[0]);
     } else {
@@ -21,11 +21,11 @@ export default function UploadPost() {
     }
   };
 
-  const onInputChange = (e: InputEvent) => {
+  const inputChange = (e: InputEvent) => {
     setCaption(e.target.value);
   };
 
-  const onSubmit = (e: ButtonEvent) => {
+  const postSubmit = (e: ButtonEvent) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
@@ -71,30 +71,19 @@ export default function UploadPost() {
             id="imgUrl"
             name="imgUrl"
             accept=".png, .jpg, .jpeg"
-            onChange={onFileChange}
+            onChange={fileChange}
           />
           <input
             type="text"
             value={caption}
             placeholder="New caption..."
             className="px-3 py-3 placeholder-slate-300 text-slate-600 relative  bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
-            onChange={onInputChange}
+            onChange={inputChange}
           />
-          {/* <button
-            type="button"
-            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#8FBFE0] hover:bg-[#05668D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            //@ts-ignore
-            onClick={() => {
-              alert("hit");
-            }}
-          >
-            <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            New Post
-          </button> */}
           <button
             type="submit"
             className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#8FBFE0] hover:bg-[#05668D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            onClick={onSubmit}
+            onClick={postSubmit}
           >
             <CameraIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             Submit
