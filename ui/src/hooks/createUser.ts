@@ -8,5 +8,5 @@ export const createUser = (user: User) => {
     .then(() => {
       swal("Account created!", "👍", "success");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => alert("Error creating account."));
 };

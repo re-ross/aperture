@@ -11,11 +11,11 @@ export const Profile = () => {
 
   useLayoutEffect(() => {
     getProfilePosts(cookies.access_token, setPosts);
-  }, []);
+  }, [posts]);
 
   return (
     <>
-      <div className="flex-col-reverse justify-center flex gap-6 flex-wrap items-center">
+      <div className="flex-col-reverse justify-center flex gap-6 flex-nowrap items-center">
         {posts.map((post) => (
           <ImageCard post={post} />
         ))}

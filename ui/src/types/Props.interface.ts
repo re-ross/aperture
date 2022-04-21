@@ -5,5 +5,6 @@ export interface PropsItem {
     imgUrl: string;
     caption: string;
     author: string;
+    updatedAt: Date;
   };
 }

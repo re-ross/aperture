@@ -36,8 +36,7 @@ export const UploadPost = () => {
       })
       .then((res) => console.log(res.status))
       .catch((err) => console.log(err))
-      .then(() => swal("Post uploaded", "📸", "success"))
-      .finally(() => window.location.reload());
+      .then(() => swal("Post uploaded!", "📸", "success"));
   };
 
   return (

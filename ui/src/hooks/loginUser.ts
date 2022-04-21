@@ -8,5 +8,5 @@ export const loginUser = (user: User) => {
     .then(() => {
       swal("Logged In", "👍", "success");
     })
-    .catch((err) => alert(err));
+    .catch((err) => alert("Invalid credentials."));
 };

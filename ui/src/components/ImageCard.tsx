@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import { fromByteArray } from "base64-js";
 import { useState } from "react";
 import { InputEvent, ButtonEvent, PropsItem } from "../types";
+import moment from "moment";
 
 export const ImageCard = ({ post }: PropsItem) => {
   //@ts-ignore
@@ -24,7 +25,6 @@ export const ImageCard = ({ post }: PropsItem) => {
       })
       .then(() => swal("Deleted", "Post successfully deleted", "success"))
       .catch((err) => console.log(err));
-    window.location.reload();
   };
   const handleCaptionChange = (e: InputEvent) => {
     e.preventDefault();
@@ -45,7 +45,6 @@ export const ImageCard = ({ post }: PropsItem) => {
       })
       .then(() => swal("Edited", "📝", "success"))
       .catch((err) => console.log(err));
-    window.location.reload();
   };
 
   return (
@@ -53,15 +52,18 @@ export const ImageCard = ({ post }: PropsItem) => {
       <div className="bg-white border">
         <div className="flex items-center py-3 ">
           <div className="ml-3 ">
-            <span className="text-sm font-semibold antialiased block leading-tight">
+            <span className="text-sm antialiased block leading-tight font-bold">
               {post.author}
+            </span>
+            <span className="text-sm font-light antialiased block leading-tight">
+              {moment(post.updatedAt).fromNow()}
             </span>
           </div>
         </div>
         <img
           src={`data:image/jpeg;base64,${base64String}`}
           alt={post.imgUrl}
-          className={"w-[700px] h-[700px]"}
+          className={"w-[600px] h-[600px]"}
         />
         <div className="flex flex-row items-center mx-4 mt-3 mb-2 justify-between">
           {editing && post.author === "reross" ? (
