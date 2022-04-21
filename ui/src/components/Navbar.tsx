@@ -2,6 +2,9 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Modal } from "@mantine/core";
+import { UploadPost } from "../components";
 const navigation = [
   { name: "Home", href: "/home", current: true },
   { name: "Profile", href: "/profile", current: false },
@@ -12,7 +15,8 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export const Navbar = () => {
+  const [opened, setOpened] = useState(false);
   const navigate = useNavigate();
   return (
     <Disclosure as="nav" className="bg-[#9ab973]">
@@ -54,7 +58,7 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-[#5c6f45] text-white"
+                            ? "hover:bg-[#5c6f45] text-black hover:text-white"
                             : " hover:bg-[#5c6f45] hover:text-white",
                           "px-3 py-2 rounded-md text-sm font-medium"
                         )}
@@ -69,14 +73,18 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Menu as="div" className="ml-3 relative">
                   <div>
+                    <Modal opened={opened} onClose={() => setOpened(false)}>
+                      <UploadPost />
+                    </Modal>
+
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 cursor-pointer hover:bg-[#5c6f45] rounded"
+                      className="h-6 w-6 cursor-pointer hover:bg-[#5c6f45] hover:text-white rounded"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth="2"
-                      onClick={() => navigate("/uploadpost")}
+                      onClick={() => setOpened(true)}
                     >
                       <path
                         strokeLinecap="round"
@@ -144,4 +152,4 @@ export default function Navbar() {
       )}
     </Disclosure>
   );
-}
+};

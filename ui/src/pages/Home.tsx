@@ -1,18 +1,17 @@
 import axios from "axios";
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import ImageCard from "../components/ImageCard";
+import { ImageCard } from "../components";
 import { getPosts } from "../hooks";
-
 axios.defaults.withCredentials = true;
 
 export const Home = () => {
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies] = useCookies(["access_token"]);
   const [posts, setPosts] = useState([] as any[]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getPosts(cookies.access_token, setPosts);
-  }, [cookies.access_token, posts]);
+  }, []);
 
   return (
     <>

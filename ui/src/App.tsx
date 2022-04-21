@@ -1,6 +1,6 @@
 import "./App.css";
-import Navbar from "./components/Navbar";
-import { Home, SignIn, SignUp, Logout, UploadPost, Profile } from "./pages";
+import { Navbar, UploadPost } from "./components";
+import { Home, SignIn, SignUp, Logout, Profile } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {

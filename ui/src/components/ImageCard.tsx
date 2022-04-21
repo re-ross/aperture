@@ -2,16 +2,15 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import swal from "sweetalert";
 import { fromByteArray } from "base64-js";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { InputEvent, ButtonEvent, PropsItem } from "../types";
 
-const ImageCard = ({ post }: PropsItem) => {
-  const navigate = useNavigate();
+export const ImageCard = ({ post }: PropsItem) => {
   //@ts-ignore
   const base64String = fromByteArray(post.bytes.data);
   const [cookies] = useCookies(["access_token"]);
   const [newCaption, setNewCaption] = useState({ caption: "" });
+  const [editing, setEditing] = useState(false);
 
   const deletePost = (e: ButtonEvent) => {
     e.preventDefault();
@@ -25,6 +24,7 @@ const ImageCard = ({ post }: PropsItem) => {
       })
       .then(() => swal("Deleted", "Post successfully deleted", "success"))
       .catch((err) => console.log(err));
+    window.location.reload();
   };
   const handleCaptionChange = (e: InputEvent) => {
     e.preventDefault();
@@ -45,11 +45,11 @@ const ImageCard = ({ post }: PropsItem) => {
       })
       .then(() => swal("Edited", "📝", "success"))
       .catch((err) => console.log(err));
-    navigate("/home");
+    window.location.reload();
   };
 
   return (
-    <div className="p-4 max-w-3xl">
+    <div className="p-4">
       <div className="bg-white border">
         <div className="flex items-center py-3 ">
           <div className="ml-3 ">
@@ -64,20 +64,33 @@ const ImageCard = ({ post }: PropsItem) => {
           className={"w-[700px] h-[700px]"}
         />
         <div className="flex flex-row items-center mx-4 mt-3 mb-2 justify-between">
-          <div className="font-normal text-sm inline-block">
-            <b>{post.author}</b>:
-            <input
-              className="border-none font-normal text-sm text-black"
-              type="text"
-              placeholder={post.caption}
-              onChange={handleCaptionChange}
-            />
-          </div>
+          {editing && post.author === "reross" ? (
+            <div className="font-normal text-sm inline-block">
+              <b>{post.author}</b>:
+              <input
+                className="border-none font-normal text-sm text-black w-96"
+                type="text"
+                placeholder={post.caption}
+                onChange={handleCaptionChange}
+              />
+              <button
+                id={post.id}
+                className="bg-[#8FBFE0] hover:bg-[#05668D] text-white font-bold py-2 px-4 rounded-full"
+                onClick={handleCaptionSubmit}
+              >
+                New caption
+              </button>
+            </div>
+          ) : (
+            <div className="font-normal text-sm inline-block">
+              <b>{post.author}</b>:{post.caption}
+            </div>
+          )}
           <div>
             <button
               id={post.id}
-              className="inline-flex items-center justify-center w-10 h-10 mr-2 text-gray-700 transition-colors duration-150 bg-white rounded-full focus:shadow-outline hover:bg-gray-200"
-              onClick={handleCaptionSubmit}
+              className="inline-flex items-center justify-center w-10 h-10 mr-2 text-gray-700 transition-colors duration-150 bg-white rounded-full focus:shadow-outline hover:bg-gray-200 mx-auto"
+              onClick={() => setEditing(!editing)}
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>

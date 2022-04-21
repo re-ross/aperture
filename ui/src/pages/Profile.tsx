@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useLayoutEffect } from "react";
 import { useCookies } from "react-cookie";
-import ImageCard from "../components/ImageCard";
+import { ImageCard } from "../components";
 import { getProfilePosts } from "../hooks";
 axios.defaults.withCredentials = true;
 
@@ -11,7 +11,7 @@ export const Profile = () => {
 
   useLayoutEffect(() => {
     getProfilePosts(cookies.access_token, setPosts);
-  }, [cookies.access_token, posts]);
+  }, []);
 
   return (
     <>

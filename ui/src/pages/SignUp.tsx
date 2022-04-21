@@ -30,7 +30,7 @@ export const SignUp = () => {
       swal("Error", "Please provide all information", "error");
     } else {
       createUser(user);
-      navigate("/");
+      setTimeout(() => navigate("/"), 1000);
     }
   };
 

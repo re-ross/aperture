@@ -26,7 +26,7 @@ export const SignIn = () => {
   const handleSubmit = async (e: ButtonEvent) => {
     e.preventDefault();
     await loginUser(user);
-    cookies && navigate("/home");
+    cookies && setTimeout(() => navigate("/home"), 1000);
   };
   return (
     <>
